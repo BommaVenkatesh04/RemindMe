@@ -6,9 +6,7 @@ export default function TaskList({
   deleteTask,
 }) {
 
-  /* =========================
-      TASK ACTIONS
-  ========================= */
+  /* TASK ACTIONS */
 
   // Toggle task completion status
   const toggleComplete = (index) => {
@@ -20,9 +18,7 @@ export default function TaskList({
     updateTask(updatedTask, index);
   };
 
-  /* =========================
-      UI RENDER
-  ========================= */
+  /*  UI RENDER */
 
   return (
     <ul className="task-list">

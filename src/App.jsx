@@ -8,9 +8,7 @@ import "./Style.css";
 
 export default function App() {
 
-  /* =========================
-      STATE MANAGEMENT
-  ========================= */
+  /* STATE */
 
   const [tasks, setTasks] = useState(() => {
     return JSON.parse(localStorage.getItem("tasks")) || [];
@@ -18,18 +16,16 @@ export default function App() {
 
   const [darkMode, setDarkMode] = useState(true);
 
-  /* =========================
-      REFS (AUDIO HANDLING)
-  ========================= */
+  //  ACTIVE ALARM TASK (NEW)
+  const [activeAlarmTask, setActiveAlarmTask] = useState(null);
+
+  /*  AUDIO REFS */
 
   const audioRef = useRef(null);
   const stopTimerRef = useRef(null);
 
-  /* =========================
-      INITIAL SETUP (EFFECTS)
-  ========================= */
+  /*  INIT AUDIO */
 
-  // Initialize alarm audio
   useEffect(() => {
     audioRef.current = new Audio(
       import.meta.env.BASE_URL + "alarm.mp3"
@@ -38,19 +34,22 @@ export default function App() {
     audioRef.current.loop = true;
   }, []);
 
-  // Request notification permission
+  /*  NOTIFICATIONS */
+
   useEffect(() => {
     if ("Notification" in window) {
       Notification.requestPermission();
     }
   }, []);
 
-  // Save tasks to localStorage
+  /*  LOCAL STORAGE */
+
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
 
-  // Unlock audio for browser autoplay policies
+  /*  UNLOCK AUDIO */
+
   useEffect(() => {
     const unlockAudio = () => {
       const audio = audioRef.current;
@@ -67,11 +66,8 @@ export default function App() {
     document.addEventListener("click", unlockAudio, { once: true });
   }, []);
 
-  /* =========================
-      ALARM FUNCTIONS
-  ========================= */
+  /* ALARM FUNCTIONS */
 
-  // Play alarm sound
   const playAlarmSound = () => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -83,9 +79,7 @@ export default function App() {
     audio.pause();
     audio.currentTime = 0;
 
-    audio.play().catch((err) => {
-      console.log("Audio blocked:", err);
-    });
+    audio.play().catch(() => {});
 
     stopTimerRef.current = setTimeout(() => {
       audio.pause();
@@ -93,7 +87,6 @@ export default function App() {
     }, 15000);
   };
 
-  // Stop alarm
   const stopAlarm = () => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -106,38 +99,31 @@ export default function App() {
     }
   };
 
-  // Snooze alarm
-  const snoozeAlarm = (task) => {
-    stopAlarm();
+  /* NEW ALARM SYSTEM */
 
-    setTimeout(() => {
-      triggerAlarm(task);
-    }, 5 * 60 * 1000);
-  };
-
-  // Trigger alarm
   const triggerAlarm = (task) => {
-
     playAlarmSound();
+
+    setActiveAlarmTask(task); // 👈 SHOW POPUP
 
     if (Notification.permission === "granted") {
       new Notification("⏰ Task Reminder", {
         body: `${task.taskName} is due now!`,
       });
     }
-
-    const userChoice = window.confirm(
-      `⏰ ${task.taskName} is due now!\n\nOK = STOP\nCancel = SNOOZE 5 MIN`
-    );
-
-    if (userChoice) {
-      stopAlarm();
-    } else {
-      snoozeAlarm(task);
-    }
   };
 
-  // Schedule alarm
+  const snoozeAlarm = (task) => {
+    stopAlarm();
+    setActiveAlarmTask(null);
+
+    setTimeout(() => {
+      triggerAlarm(task);
+    }, 5 * 60 * 1000);
+  };
+
+  /* SCHEDULE ALARM */
+
   const scheduleAlarm = (task) => {
     if (!task.date || !task.time) return;
 
@@ -153,11 +139,8 @@ export default function App() {
     }
   };
 
-  /* =========================
-      TASK OPERATIONS
-  ========================= */
+  /* TASK OPERATIONS */
 
-  // Add task
   const addTask = (task) => {
     const newTask = {
       ...task,
@@ -168,31 +151,57 @@ export default function App() {
     scheduleAlarm(newTask);
   };
 
-  // Update task
   const updateTask = (updatedTask, index) => {
     const updated = [...tasks];
     updated[index] = updatedTask;
     setTasks(updated);
   };
 
-  // Delete task
   const deleteTask = (index) => {
     setTasks(tasks.filter((_, i) => i !== index));
   };
 
-  // Clear all tasks
   const clearTasks = () => {
     setTasks([]);
   };
 
-  /* =========================
-      UI RENDER
-  ========================= */
+  /*  UI */
 
   return (
     <div className={darkMode ? "dark-theme" : "light-theme"}>
 
       <div className="app-container">
+
+        {/* ALARM POPUP (NEW UI) */}
+        {activeAlarmTask && (
+          <div className="alarm-popup">
+
+            <h3>⏰ {activeAlarmTask.taskName}</h3>
+            <p>Task is due now</p>
+
+            <div className="alarm-buttons">
+
+              <button
+                className="stop-btn"
+                onClick={() => {
+                  stopAlarm();
+                  setActiveAlarmTask(null);
+                }}
+              >
+                ⛔ Stop
+              </button>
+
+              <button
+                className="snooze-btn"
+                onClick={() => snoozeAlarm(activeAlarmTask)}
+              >
+                😴 Snooze 5 min
+              </button>
+
+            </div>
+
+          </div>
+        )}
 
         {/* HEADER */}
         <header>
@@ -223,10 +232,10 @@ export default function App() {
           deleteTask={deleteTask}
         />
 
-        {/* PROGRESS TRACKER */}
+        {/* PROGRESS */}
         <ProgressTracker tasks={tasks} />
 
-        {/* CLEAR BUTTON */}
+        {/* CLEAR */}
         {tasks.length > 0 && (
           <button className="clear-btn" onClick={clearTasks}>
             Clear All Tasks

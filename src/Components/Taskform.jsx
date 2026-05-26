@@ -2,9 +2,7 @@ import React, { useRef, useState } from "react";
 
 export default function TaskForm({ addTask }) {
 
-  /* =========================
-      FORM STATE
-  ========================= */
+  /* FORM STATE */
 
   const [task, setTask] = useState("");
   const [priority, setPriority] = useState("Medium");
@@ -12,16 +10,12 @@ export default function TaskForm({ addTask }) {
   const [dueDate, setDueDate] = useState("");
   const [dueTime, setDueTime] = useState("");
 
-  /* =========================
-      INPUT REFERENCES
-  ========================= */
+  /* INPUT REFERENCES */
 
   const dateRef = useRef(null);
   const timeRef = useRef(null);
 
-  /* =========================
-      HANDLE SUBMIT
-  ========================= */
+  /* HANDLE SUBMIT */
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -48,9 +42,7 @@ export default function TaskForm({ addTask }) {
     setDueTime("");
   };
 
-  /* =========================
-      UI RENDER
-  ========================= */
+  /* UI RENDER */
 
   return (
     <form onSubmit={handleSubmit} className="task-form">

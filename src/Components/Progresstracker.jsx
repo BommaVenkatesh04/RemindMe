@@ -1,8 +1,6 @@
 export default function ProgressTracker({ tasks }) {
 
-  /* =========================
-      TASK ANALYSIS
-  ========================= */
+  /* TASK ANALYSIS */
 
   // Count completed tasks
   const completedTasks = tasks.filter(
@@ -18,9 +16,7 @@ export default function ProgressTracker({ tasks }) {
       ? 0
       : (completedTasks / totalTasks) * 100;
 
-  /* =========================
-      UI RENDER
-  ========================= */
+  /* UI RENDER */
 
   return (
     <div className="progress-tracker">
