@@ -48,7 +48,7 @@ export default function ProgressTracker({ tasks }) {
 
       {/* PERCENTAGE TEXT */}
       <p className="progress-text">
-        {progress.toFixed(0)}% Productivity Completed 🚀
+        {progress.toFixed(0)}% Productivity Completed 
       </p>
 
     </div>
