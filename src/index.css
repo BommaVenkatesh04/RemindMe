@@ -1,0 +1,110 @@
+/* GOOGLE FONT IMPORT */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* RESET */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ROOT VARIABLES */
+
+:root {
+  --primary-color: #f97316;
+  --secondary-color: #3b82f6;
+
+  --bg-main: #0f172a;
+  --bg-card: #1e293b;
+
+  --text-primary: #ffffff;
+  --text-secondary: #94a3b8;
+
+  --border-color: rgba(255, 255, 255, 0.08);
+
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color: var(--text-primary);
+  background: var(--bg-main);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* BODY */
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+
+  background: linear-gradient(to right, #0f172a, #111827);
+
+  color: var(--text-primary);
+
+  overflow-x: hidden;
+}
+
+/* ROOT */
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* LINKS */
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* BUTTONS */
+
+button {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* INPUTS */
+
+input,
+textarea,
+select {
+  font-family: inherit;
+  outline: none;
+  border: none;
+}
+
+/* SCROLLBAR */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #111827;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* SMOOTH SCROLL */
+
+html {
+  scroll-behavior: smooth;
+}
