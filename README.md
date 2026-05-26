@@ -4,8 +4,10 @@ RemindMe is a modern React-based task management application designed to help us
 
 ---
 
-## 🚀 Live Demo
-Coming Soon...
+## 🚀 Live Project
+
+Check out the live app here:  
+👉 [RemindMe Live] (https://remind-52zeg6lzv-bommavenkatesh04s-projects.vercel.app/)
 
 ---
 
